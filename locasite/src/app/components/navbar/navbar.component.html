@@ -1,0 +1,63 @@
+<nav
+  class="navbar navbar-expand-lg bg-white"
+  style="background-color: rgb(247, 247, 247)"
+>
+  <div class="container-fluid">
+    <div class="navbar-wrapper">
+      <div class="navbar-toggle">
+        <button type="button" class="navbar-toggler" (click)="sidebarToggle()">
+          <span class="navbar-toggler-bar bar1"></span>
+          <span class="navbar-toggler-bar bar2"></span>
+          <span class="navbar-toggler-bar bar3"></span>
+        </button>
+      </div>
+      <a class="navbar-brand"
+        ><em><strong>Locasite</strong></em></a
+      >
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="collapse()"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="collapseExample"
+    >
+      <span class="navbar-toggler-bar navbar-kebab"></span>
+      <span class="navbar-toggler-bar navbar-kebab"></span>
+      <span class="navbar-toggler-bar navbar-kebab"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="collapseExample"
+      [ngbCollapse]="isCollapsed"
+    >
+      <form>
+        <div class="input-group no-border"></div>
+      </form>
+      <ul class="navbar-nav" *ngIf="isLogin">
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+            <i class="now-ui-icons users_single-02"></i>
+            <p>
+              <span class="d-lg-none d-md-block"></span>
+            </p>
+          </a>
+          <div
+            class="dropdown-menu dropdown-menu-right"
+            ngbDropdownMenu
+            aria-labelledby="dropdownBasic1"
+          >
+            <a routerLink="/user-profile" class="dropdown-item">
+              <i class="now-ui-icons users_single-02"></i>
+              <p><em> Mon profile</em></p></a
+            >
+            <a class="dropdown-item" (click)="logout()">
+              <i class="now-ui-icons media-1_button-power"></i>
+              <p><em>Deconnexion</em></p>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

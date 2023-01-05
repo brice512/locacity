@@ -1,0 +1,411 @@
+<div
+  class="main-content bg-white"
+  style="margin-top: 6.5%; height: 100%; width: 100%"
+  *ngIf="isList"
+>
+  <div style="text-align: center">
+    <h3>
+      <em><strong>Filtrer</strong></em>
+    </h3>
+    <form [formGroup]="filtre">
+      <div
+        class="row d-flex justify-content-between"
+        style="margin-left: 7%; margin-right: 7%"
+      >
+        <select
+          (change)="searchAnnonce()"
+          formControlName="ville"
+          style="background-color: #fff"
+          class="col-3 form-control no-border"
+          id=""
+        >
+          <option value="">Ville</option>
+          <option
+            class="text-capitalize"
+            *ngFor="let ville of villes"
+            value="{{ ville }}"
+          >
+            {{ ville }}
+          </option>
+        </select>
+        <select
+          (change)="searchAnnonce()"
+          formControlName="categorie"
+          style="background-color: #fff"
+          class="col-3 ml-1 form-control no-border"
+          id=""
+        >
+          <option value="">Categorie</option>
+          <option
+            class="text-capitalize"
+            *ngFor="let categorie of categories"
+            value="{{ categorie }}"
+          >
+            {{ categorie }}
+          </option>
+        </select>
+        <select
+          (change)="searchAnnonce()"
+          formControlName="etat"
+          style="background-color: #fff"
+          class="col-3 form-control no-border"
+          id=""
+        >
+          <option value="">Etat</option>
+          <option value="libre">Libre</option>
+          <option value="reserver">Reserve</option>
+          <option value="occupe">Occupe</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <button class="btn btn-info mt-2 btn-rounded" (click)="selected('form')">
+    Nouvelle
+  </button>
+  <div class="row mt-2 pt-4">
+    <div class="col-lg-4" *ngFor="let ann of annonces">
+      <div class="card">
+        <div class="">
+          <img
+            [src]="annonceImages(ann)[0]"
+            alt=""
+            height="160rem"
+            width="100%"
+          />
+        </div>
+        <div class="d-flex mt-1">
+          <div class="ml-2 mr-3">
+            <h5>
+              <em
+                ><strong class="text-capitalize">
+                  {{ lettre15(ann.habitat.nom) }}..</strong
+                ></em
+              >
+            </h5>
+          </div>
+          <div class="ml-5 mt-1">
+            <div class="stats">
+              <h6>
+                <i class="now-ui-icons media-1_camera-compact"></i
+                >{{ ann.habitat.images.length }}
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between ml-2 mr-4 pl-2 pr-2">
+          <div class="">
+            <span class="text-capitalize">{{ ann.habitat.ville }}</span>
+          </div>
+          <div class="">
+            <span> {{ ann.habitat.etat }} </span>
+          </div>
+        </div>
+        <div class="" style="margin-left: 40%">
+          <span
+            ><strong>Prix: {{ ann.habitat.prix }} fcfa</strong></span
+          >
+        </div>
+        <div class="d-flex justify-content-between ml-2 mr-2">
+          <button
+            type="button"
+            class="btn btn-success btn-md"
+            (click)="masquer(annonce_tmp)"
+          >
+            Masquer
+          </button>
+          <button
+            type="button"
+            class="btn btn-info btn-md"
+            (click)="selected(ann)"
+          >
+            + Infos
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="main-content bg-white text-center"
+  style="
+    margin-top: 3%;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    margin-left: 4%;
+  "
+  *ngIf="isSelected"
+>
+  <div class="card col-lg-10">
+    <div class="ml-3 mr-3 mt-2">
+      <div class="row ml-1 mr-1">
+        <div
+          id="carouselExampleControls"
+          class="carousel slide"
+          data-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <ul
+              *ngFor="
+                let image of annonceImages(annonce_tmp);
+                let i = index;
+                first as isFirst
+              "
+            >
+              <div
+                [ngClass]="isFirst ? 'carousel-item active' : 'carousel-item'"
+              >
+                <img class="d-block w-100" [src]="image" />
+              </div>
+            </ul>
+          </div>
+          <a
+            class="carousel-control-prev"
+            href="#carouselExampleControls"
+            role="button"
+            data-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a
+            class="carousel-control-next"
+            href="#carouselExampleControls"
+            role="button"
+            data-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+      <div class="mr-2">
+        <h3>
+          <strong>{{ ann.habitat.nom }}</strong>
+        </h3>
+        <div class="" style="text-align: right">
+          <h6>{{ ann.habitat.ville }}</h6>
+          <h6>{{ ann.habitat.type }}</h6>
+          <h6>{{ ann.habitat.etat }}</h6>
+          <h6>{{ ann.habitat.nombrePiece }} Pieces</h6>
+          <H5
+            ><b>Prix: {{ ann.habitat.prix }} fcfa</b></H5
+          >
+        </div>
+        <div>
+          <p>
+            {{ ann.habitat.description }}
+          </p>
+        </div>
+
+        <div class="btn-group" style="text-align: right">
+          <button
+            type="button"
+            class="btn btn-danger btn-md"
+            (click)="masquer(annonce_tmp)"
+          >
+            Masquer
+          </button>
+          <button
+            type="button"
+            class="btn btn-info btn-md"
+            (click)="selected('list')"
+          >
+            Retour
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="bg-white card col-lg-10 pt-5"
+  style="margin-top: 5%; margin-left: 8%"
+  *ngIf="isForm"
+>
+  <h3 class="text-center" style="font-size: 200%"><b>Nouvelle Annonce</b></h3>
+  <form (ngSubmit)="onSubmit()" [formGroup]="recordForm">
+    <div class="d-flex ml-1">
+      <div class="form-group col-lg-6 form-floating-label">
+        <input
+          id="nom"
+          formControlName="nom"
+          type="text"
+          class="form-control"
+          required
+        />
+        <label for="nom" class="placeholder">Nom</label>
+        <small
+          *ngIf="recordForm.get('nom').errors && recordForm.get('nom').touched"
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+      <div class="form-group col-lg-6 form-floating-label">
+        <input
+          id="categorie"
+          formControlName="categorie"
+          type="text"
+          class="form-control"
+          required
+        />
+        <label for="categorie" class="placeholder">Categorie</label>
+        <small
+          *ngIf="
+            recordForm.get('categorie').errors &&
+            recordForm.get('categorie').touched
+          "
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+    </div>
+    <div class="d-flex ml-1">
+      <div class="form-group col-lg-6 form-floating-label">
+        <input
+          id="superficie"
+          formControlName="superficie"
+          type="number"
+          class="form-control"
+          required
+        />
+        <label for="superficie" class="placeholder">Superficie (m²)</label>
+        <small
+          *ngIf="
+            recordForm.get('superficie').errors &&
+            recordForm.get('superficie').touched
+          "
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+      <div class="form-group col-lg-6 form-floating-label">
+        <input
+          id="ville"
+          formControlName="ville"
+          type="text"
+          class="form-control"
+          required
+        />
+        <label for="ville" class="placeholder">Ville</label>
+        <small
+          *ngIf="
+            recordForm.get('ville').errors && recordForm.get('ville').touched
+          "
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+    </div>
+    <div class="d-flex ml-1">
+      <div class="form-group col-lg-6 form-floating-label">
+        <input
+          id="nombrePiece"
+          formControlName="nombrePiece"
+          type="number"
+          class="form-control"
+          required
+        />
+        <label for="nombrePiece" class="placeholder">Nombre de pièce</label>
+        <small
+          *ngIf="
+            recordForm.get('nombrePiece').errors &&
+            recordForm.get('nombrePiece').touched
+          "
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+      <div class="form-group col-lg-6 form-floating-label">
+        <input
+          id="prix"
+          formControlName="prix"
+          type="number"
+          class="form-control"
+          required
+        />
+        <label for="prix" class="placeholder">Prix (fcfa)</label>
+        <small
+          *ngIf="
+            recordForm.get('prix').errors && recordForm.get('prix').touched
+          "
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+    </div>
+    <div class="d-flex ml-1">
+      <div class="form-group col-lg-6">
+        <input
+          type="file"
+          id="images"
+          required
+          name="images"
+          (change)="onUpload($event)"
+          multiple
+          class="form-control"
+          accept="image/*"
+          maxFileSize="1000000"
+        />
+        <label for="images" class="placeholder text-white btn btn-primary"
+          >+ Images</label
+        >
+      </div>
+
+      <div class="form-group col-lg-6 form-floating-label">
+        <textarea
+          class="form-control"
+          formControlName="description"
+          id="description"
+          cols="15"
+          rows="10"
+          placeholder="Description"
+        >
+Description</textarea
+        >
+        <small
+          *ngIf="
+            recordForm.get('description').errors &&
+            recordForm.get('description').touched
+          "
+          class="text-danger"
+          >A renseigner</small
+        >
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="d-flex" *ngIf="uploadedFiles.length">
+        <img
+          class="mt-5"
+          [src]="file"
+          alt="Profil"
+          *ngFor="let file of url"
+          width="100"
+          height="100"
+          style="border-radius: 15px"
+        />
+      </div>
+    </div>
+    <div class="d-flex col-lg-8 justify-content-between">
+      <button type="button" class="btn btn-danger" (click)="selected('list')">
+        Annuler
+      </button>
+      <button
+        class="btn btn-info"
+        type="submit"
+        [disabled]="
+          recordForm.get('ville').errors ||
+          recordForm.get('categorie').errors ||
+          recordForm.get('prix').errors ||
+          recordForm.get('nom').errors ||
+          recordForm.get('nombrePiece').errors ||
+          recordForm.get('superficie').errors ||
+          recordForm.get('description').errors ||
+          uploadedFiles.length
+        "
+      >
+        Céer
+      </button>
+    </div>
+  </form>
+</div>
