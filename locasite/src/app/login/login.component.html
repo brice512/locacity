@@ -1,0 +1,312 @@
+<div class="login pt-4">
+  <div class="wrapper wrapper-login">
+    <div class="container container-login animated fadeIn" *ngIf="isLogin">
+      <img src="./assets/img/apple-icon.png" alt="" />
+      <h3 class="text-center">Se Connecter</h3>
+      <form (ngSubmit)="onLogin()" [formGroup]="loginForm">
+        <div class="login-form">
+          <div class="form-group form-floating-label">
+            <input
+              id="email"
+              formControlName="email"
+              type="email"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="email" class="placeholder">Email</label>
+
+            <small
+              *ngIf="
+                loginForm.get('email').errors && loginForm.get('email').touched
+              "
+              class="text-danger"
+              >Email demandé</small
+            >
+          </div>
+          <div class="form-group form-floating-label">
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="password" class="placeholder">Mot de Passe</label>
+            <div class="show-password">
+              <i class="flaticon-interface"></i>
+            </div>
+
+            <small
+              *ngIf="
+                loginForm.get('password').errors &&
+                loginForm.get('password').touched
+              "
+              class="text-danger"
+              >Mot de passe demandé</small
+            >
+          </div>
+          <div class="row form-sub m-0">
+            <div class="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="rememberme"
+              />
+              <label class="custom-control-label" for="rememberme"
+                >Se souvenir de Moi</label
+              >
+            </div>
+
+            <a href="#" class="link float-right">Mot de passe oublie ?</a>
+          </div>
+          <div class="form-action mb-3">
+            <a
+              routerLink="/dashboard"
+              id="show-signin"
+              class="btn btn-danger btn-rounded btn-login mr-3"
+              >Retour</a
+            >
+            <button
+              class="btn btn-primary btn-rounded btn-login"
+              [disabled]="
+                loginForm.get('password').errors ||
+                loginForm.get('email').errors
+              "
+            >
+              Se connecter
+            </button>
+          </div>
+          <div class="login-account">
+            <span class="msg">Vous n'avez pas de compte ?</span>
+            <a class="btn btn-link" id="show-signup" (click)="selected('')">
+              Creer un compte
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="container container-signup animated fadeIn" *ngIf="isSignUp">
+      <img src="./assets/img/apple-icon.png" alt="" />
+      <h3 class="text-center">Creer un compte</h3>
+      <form (ngSubmit)="onRegister()" [formGroup]="registerForm">
+        <div class="login-form">
+          <div class="form-group form-floating-label">
+            <input
+              id="nom"
+              formControlName="nom"
+              type="text"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="nom" class="placeholder">Nom</label>
+
+            <small
+              *ngIf="
+                registerForm.get('nom').errors &&
+                registerForm.get('nom').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+          <div class="form-group form-floating-label">
+            <input
+              id="prenom"
+              formControlName="prenom"
+              type="text"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="prenom" class="placeholder">Prenom</label>
+            <small
+              *ngIf="
+                registerForm.get('prenom').errors &&
+                registerForm.get('prenom').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+
+          <div class="form-group form-floating-label">
+            <input
+              id="email"
+              formControlName="email"
+              type="email"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="email" class="placeholder">Email</label>
+            <small
+              *ngIf="
+                registerForm.get('email').errors &&
+                registerForm.get('email').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+
+          <div class="form-group form-floating-label">
+            <input
+              id="dateNaissance"
+              formControlName="dateNaissance"
+              type="date"
+              class="form-control input-border-bottom"
+              required
+              min="1945-01-01"
+              max="{{ year }}-12-31"
+            />
+            <label for="dateNaissance" class="placeholder"
+              >Date de Naissance</label
+            >
+            <small
+              *ngIf="
+                registerForm.get('dateNaissance').errors &&
+                registerForm.get('dateNaissance').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+
+          <div class="form-group form-floating-label">
+            <input
+              id="contact"
+              formControlName="tel"
+              type="number"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="contact" class="placeholder">Contact</label>
+            <small
+              *ngIf="
+                registerForm.get('tel').errors &&
+                registerForm.get('tel').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+
+          <div class="form-group form-floating-label">
+            <input
+              id="ville"
+              formControlName="ville"
+              type="text"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="ville" class="placeholder">Ville</label>
+            <small
+              *ngIf="
+                registerForm.get('ville').errors &&
+                registerForm.get('ville').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+
+          <div class="form-group col-lg-6">
+            <input
+              type="file"
+              id="images"
+              required
+              formControlName="avatar"
+              (change)="onUpload($event)"
+              multiple
+              class="form-control"
+              accept="image/*"
+              maxFileSize="1000000"
+            />
+            <label for="images" class="placeholder text-white btn btn-primary"
+              >Profile</label
+            >
+          </div>
+
+          <div class="form-group form-floating-label">
+            <input
+              id="passwordsignin"
+              formControlName="password"
+              type="password"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="passwordsignin" class="placeholder"
+              >Mot de Passe...</label
+            >
+            <small
+              *ngIf="
+                registerForm.get('password').errors &&
+                registerForm.get('password').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+          <div class="form-group form-floating-label">
+            <input
+              id="confirmpassword"
+              formControlName="confirmPassword"
+              type="password"
+              class="form-control input-border-bottom"
+              required
+            />
+            <label for="confirmpassword" class="placeholder"
+              >Confirmer le Mot de Passe</label
+            >
+            <small
+              *ngIf="
+                registerForm.get('confirmPassword').errors &&
+                registerForm.get('confirmPassword').touched
+              "
+              class="text-danger"
+              >A renseigner</small
+            >
+          </div>
+          <div class="text-center" *ngIf="uploadedFile">
+            <img
+              class="mt-5"
+              [src]="url"
+              alt="Profil"
+              width="100"
+              height="100"
+              style="border-radius: 15px"
+            />
+          </div>
+
+          <div class="form-action">
+            <a
+              routerLink="/dashboard"
+              id="show-signin"
+              class="btn btn-danger btn-rounded btn-login mr-3"
+              >Annuler</a
+            >
+            <button
+              class="btn btn-primary btn-rounded btn-login"
+              [disabled]="
+                registerForm.get('password').errors ||
+                registerForm.get('email').errors ||
+                registerForm.get('prenom').errors ||
+                registerForm.get('nom').errors ||
+                registerForm.get('dateNaissance').errors ||
+                registerForm.get('ville').errors ||
+                registerForm.get('tel').errors
+              "
+            >
+              Creer
+            </button>
+          </div>
+          <div class="login-account">
+            <span class="msg">Vous avez deja un compte ?</span>
+            <a class="btn btn-link" id="show-signup" (click)="selected('login')"
+              >Se connecter</a
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

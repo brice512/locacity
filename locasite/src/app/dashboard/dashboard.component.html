@@ -1,0 +1,239 @@
+<div
+  class="main-content bg-white"
+  style="margin-top: 2%; height: 100%; width: 100%"
+  *ngIf="isList"
+>
+  <div
+    class="row card"
+    style="
+      background-image: url('./assets/img/3.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: #fff;
+      width: 100%;
+      padding-top: 1.5%;
+      height: 55%;
+      margin-left: 0%;
+      margin-right: 0%;
+      text-align: center;
+    "
+  >
+    <h2 class="mt-3">
+      <strong><em>Bienvenue</em> sur Locasite.<em>com</em></strong>
+    </h2>
+    <p style="font-size: 17px">
+      <strong
+        >Nous vous proposons plus de 400 annonces<br />
+        de logement sur tout l'étendu <br />
+        du territoire national</strong
+      >
+    </p>
+    <h3>
+      <em><strong>Filtrer</strong></em>
+    </h3>
+    <form [formGroup]="filtre">
+      <div class="row d-flex justify-content-between ml-2 mr-2 mb-4">
+        <select
+          formControlName="ville"
+          style="background-color: #fff"
+          class="col-3 form-control no-border"
+          id=""
+          (change)="searchAnnonce()"
+        >
+          <option value="">Ville</option>
+          <option *ngFor="let ville of villes" value="{{ ville }}">
+            {{ ville }}
+          </option>
+        </select>
+        <select
+          formControlName="categorie"
+          style="background-color: #fff"
+          class="col-3 ml-1 form-control no-border"
+          id=""
+          (change)="searchAnnonce()"
+        >
+          <option value="">Categorie</option>
+          <option *ngFor="let categorie of categories" value="{{ categorie }}">
+            {{ categorie }}
+          </option>
+        </select>
+        <input
+          class="col-3 form-control"
+          style="background-color: #fff"
+          type="number"
+          min="1"
+          max="15"
+          (change)="searchAnnonce()"
+          formControlName="nombrePiece"
+          placeholder="Nombre de Pièce..."
+        />
+        <input
+          class="col-3 mt-2 form-control"
+          style="background-color: #fff"
+          type="number"
+          min="2000"
+          max="3000000"
+          (change)="searchAnnonce()"
+          formControlName="prixMin"
+          placeholder="Prix Minimal..."
+        />
+        <input
+          class="col-3 mt-2 ml-2 form-control"
+          style="background-color: #fff"
+          type="number"
+          min="2000"
+          max="3000000"
+          (change)="searchAnnonce()"
+          formControlName="prixMax"
+          placeholder="Prix Maximal..."
+        />
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-lg-4" *ngFor="let ann of annonces">
+      <div class="card">
+        <div class="">
+          <img
+            [src]="annonceImages(ann)[0]"
+            alt=""
+            height="160rem"
+            width="100%"
+          />
+        </div>
+        <div class="d-flex mt-1">
+          <div class="ml-2 mr-3">
+            <h5>
+              <em
+                ><strong class="text-capitalize">
+                  {{ lettre15(ann.habitat.nom) }}..
+                </strong></em
+              >
+            </h5>
+          </div>
+          <div class="ml-5 mt-1">
+            <div class="stats">
+              <h6>
+                <i class="now-ui-icons media-1_camera-compact"></i
+                >{{ ann.habitat.images.length }}
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between ml-2 mr-4 pl-2 pr-2">
+          <div class="">
+            <span class="text-capitalize">{{ ann.habitat.ville }}</span>
+          </div>
+          <div class="">
+            <span> {{ ann.habitat.nombrePiece }} Piece(s)</span>
+          </div>
+        </div>
+        <div class="" style="margin-left: 40%">
+          <span
+            ><strong>Prix: {{ ann.habitat.prix }} fcfa</strong></span
+          >
+        </div>
+        <div class="d-flex justify-content-between ml-2 mr-2">
+          <button
+            type="button"
+            class="btn btn-success btn-md"
+            (click)="reserver(annonce_tmp)"
+          >
+            Reserver
+          </button>
+          <button
+            type="button"
+            class="btn btn-info btn-md"
+            (click)="selected(ann)"
+          >
+            + Infos
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="main-content bg-white ml-3"
+  style="margin-top: 2%; height: 100%; width: 100%; text-align: center"
+  *ngIf="isSelected"
+>
+  <div class="card col-lg-10">
+    <div class="ml-3 mr-3 mt-2">
+      <div class="row ml-1 mr-1">
+        <div
+          id="carouselExampleControls"
+          class="carousel slide"
+          data-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <ul
+              *ngFor="
+                let image of annonceImages(annonce_tmp);
+                let i = index;
+                first as isFirst
+              "
+            >
+              <div
+                [ngClass]="isFirst ? 'carousel-item active' : 'carousel-item'"
+              >
+                <img class="d-block w-100" [src]="image" />
+              </div>
+            </ul>
+          </div>
+          <a
+            class="carousel-control-prev"
+            href="#carouselExampleControls"
+            role="button"
+            data-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a
+            class="carousel-control-next"
+            href="#carouselExampleControls"
+            role="button"
+            data-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+      <div class="mr-2 mt-2">
+        <h3>
+          <strong class="text-capitalize">{{ annonce_tmp.habitat.nom }}</strong>
+        </h3>
+        <div class="" style="text-align: right">
+          <h6 class="text-capitalize">{{ annonce_tmp.habitat.ville }}</h6>
+          <h6 class="text-capitalize">{{ annonce_tmp.habitat.type }}</h6>
+          <h6>{{ annonce_tmp.habitat.nombrePiece }} Piece(s)</h6>
+          <H5>Prix: {{ annonce_tmp.habitat.prix }} fcfa</H5>
+        </div>
+        <div>
+          <p>
+            {{ annonce_tmp.habitat.description }}
+          </p>
+        </div>
+
+        <div class="btn-group" style="text-align: right">
+          <button
+            type="button"
+            class="btn btn-success btn-md"
+            (click)="reserver(annonce_tmp)"
+          >
+            Reserver
+          </button>
+          <button
+            type="button"
+            class="btn btn-info btn-md"
+            (click)="selected1()"
+          >
+            Retour
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

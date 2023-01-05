@@ -1,0 +1,121 @@
+<div class="main-content bg-white mt-5" *ngIf="!mes_reservation">
+  <form [formGroup]="filtre">
+    <div class="form-group col-4">
+      <input
+        id="nom"
+        formControlName="utilisateur"
+        type="text"
+        class="form-control input-border-bottom"
+        required
+        placeholder="Utilisateur..."
+      />
+    </div>
+  </form>
+
+  <div class="d-flex row">
+    <div class="col-md-4" *ngFor="let reservation of reservations">
+      <div class="card card-user">
+        <div class="card-body text-center">
+          <a class="">
+            <img
+              class="avatar border-gray"
+              [src]="getImage(reservation.postulant)"
+              alt="..."
+            />
+            <h5 class="title text-capitalize">
+              {{ nomPrenom(reservation.postulant) }}
+            </h5>
+          </a>
+          <p class="description text-capitalize">
+            {{ reservation.postulant.ville }}
+          </p>
+          <p class="description text-center">
+            {{ reservation.habitat.prix }}
+          </p>
+          <p class="description text-center text-capitalize">
+            {{ lettre15(reservation.habitat.nom) }}
+          </p>
+          <p class="description text-center">
+            {{ reservation.etat }}
+          </p>
+        </div>
+        <hr />
+        <div class="button-container justify-content-between">
+          <button
+            *ngIf="etat(reservation)"
+            class="btn mr-3 btn-danger"
+            (click)="annulerReservation(reservation)"
+          >
+            Annuler
+          </button>
+          <button
+            *ngIf="etat(reservation)"
+            class="btn ml-3 btn-success"
+            (click)="accepterOuRejeterReservation(reservation, 'accepter')"
+          >
+            Accepter
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content bg-white mt-5" *ngIf="mes_reservation">
+  <div class="col-lg-4" *ngFor="let reservation of reservations">
+    <div class="card">
+      <div class="">
+        <img
+          [src]="annonceImages(reservation)[0]"
+          alt=""
+          height="160rem"
+          width="100%"
+        />
+      </div>
+      <div class="d-flex mt-1">
+        <div class="ml-2 mr-3">
+          <h5>
+            <em
+              ><strong class="text-capitalize">
+                {{ lettre15(reservation.annonce.habitat.nom) }}..
+              </strong></em
+            >
+          </h5>
+        </div>
+        <div class="ml-5 mt-1">
+          <div class="stats">
+            <h6>
+              <i class="now-ui-icons media-1_camera-compact"></i
+              >{{ reservation.annonce.habitat.images.length }}
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between ml-2 mr-4 pl-2 pr-2">
+        <div class="">
+          <span class="text-capitalize">{{
+            reservation.annonce.habitat.ville
+          }}</span>
+        </div>
+        <div class="">
+          <span> {{ reservation.annonce.habitat.nombrePiece }} Piece(s)</span>
+        </div>
+      </div>
+      <div class="" style="margin-left: 40%">
+        <span
+          ><strong
+            >Prix: {{ reservation.annonce.habitat.prix }} fcfa</strong
+          ></span
+        >
+      </div>
+      <div class="d-flex justify-content-between ml-2 mr-2">
+        <button
+          type="button"
+          class="btn btn-success btn-md"
+          (click)="reserver(annonce_tmp)"
+        >
+          Reserver
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
